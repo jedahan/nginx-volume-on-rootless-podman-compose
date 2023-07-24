@@ -3,17 +3,16 @@ services:
     image: bash:5
     volumes:
       - frontend:/frontend:rw
-    command: "echo hithere >> /frontend/index.html"
+    command: "bash -c 'rm -f /frontend/index.html && echo hello > /frontend/index.html'"
   web:
-    image: docker.io/library/nginx
-    depends_on: builder
+    image: nginxinc/nginx-unprivileged
     restart: unless-stopped
     volumes:
       - frontend:/frontend:ro
       - /etc/localtime:/etc/localtime
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - 11221:80
+      - 11221:8080
 
 volumes:
   frontend:
