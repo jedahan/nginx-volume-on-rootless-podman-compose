@@ -1,6 +1,12 @@
 services:
+  builder:
+    image: bash:5
+    volumes:
+      - frontend:/frontend:rw
+    command: "echo hithere >> /frontend/index.html"
   web:
     image: docker.io/library/nginx
+    depends_on: builder
     restart: unless-stopped
     volumes:
       - frontend:/frontend:ro
